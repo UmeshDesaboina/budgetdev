@@ -84,9 +84,9 @@ export function MobileBestSellers({ cms }: MobileBestSellersProps) {
         {loading ? (
           <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-pink-400" /></div>
         ) : products && products.length > 0 ? (
-          <div className="relative pb-24">
+          <div className="relative pb-[120px]">
             {/* Banner Area */}
-            <div className="relative w-full h-[260px] rounded-[24px] overflow-hidden shadow-inner bg-white">
+            <div className="relative w-full aspect-[2.2/1] rounded-[24px] overflow-hidden shadow-inner bg-white">
               <Image 
                 src={cms?.bannerUrl || DEFAULT_BANNER} 
                 alt="Best Sellers Banner" 
@@ -98,7 +98,7 @@ export function MobileBestSellers({ cms }: MobileBestSellersProps) {
             </div>
 
             {/* Overlapping Products Carousel */}
-            <div className="absolute bottom-[-10px] left-0 right-0 z-20 px-2" ref={emblaRef}>
+            <div className="absolute bottom-0 left-0 right-0 z-20 px-2" ref={emblaRef}>
               <div className="flex">
                 {slides.map((group, groupIdx) => (
                   <div key={groupIdx} className="flex-[0_0_100%] min-w-0 grid grid-cols-3 gap-2">

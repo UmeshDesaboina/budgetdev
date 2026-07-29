@@ -65,11 +65,11 @@ export function MobileFestiveCarousel({ cms }: MobileFestiveCarouselProps) {
       <div className="container mx-auto px-4 space-y-8">
         
         {/* Top Festive Banner */}
-        <div className="relative w-full h-[220px] rounded-[20px] overflow-hidden shadow-lg">
+        <div className="relative w-full aspect-[1.6/1] rounded-[20px] overflow-hidden shadow-lg">
           <Image 
             src={bannerUrl} 
             alt="Festive Collection" 
-            fill 
+            fill
             className="object-cover object-top"
             unoptimized
           />
