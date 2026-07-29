@@ -115,24 +115,92 @@ export default function CheckoutPage() {
   const total = Math.max(0, subtotal + shipping - discount);
 
   const handleDetectLocation = () => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+      toast({
+        variant: "destructive",
+        title: "Not Supported",
+        description: "Geolocation is not supported by your browser."
+      });
+      return;
+    }
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        // Simulated reverse geocoding for prototype
-        setTimeout(() => {
-          setFormData(prev => ({
-            ...prev,
-            city: 'Bangalore',
-            state: 'Karnataka',
-            pincode: '560001',
-            addressLine1: 'Prestige Tech Park, Marathahalli'
-          }));
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords;
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
+            {
+              headers: {
+                'Accept-Language': 'en',
+                'User-Agent': 'GiftArtStudio/1.0 (checkout-location-detection)'
+              }
+            }
+          );
+          
+          if (!response.ok) {
+            throw new Error("Failed to fetch address from geocoding service");
+          }
+          
+          const data = await response.json();
+          if (data && data.address) {
+            const addr = data.address;
+            
+            const state = addr.state || '';
+            const city = addr.city || addr.town || addr.village || addr.county || addr.state_district || '';
+            const pincode = addr.postcode || '';
+            
+            const addressParts = [];
+            if (addr.building) addressParts.push(addr.building);
+            if (addr.amenity) addressParts.push(addr.amenity);
+            if (addr.house_number) addressParts.push(addr.house_number);
+            if (addr.road) addressParts.push(addr.road);
+            if (addr.suburb) addressParts.push(addr.suburb);
+            if (addr.neighbourhood) addressParts.push(addr.neighbourhood);
+            
+            const addressLine1 = addressParts.filter(Boolean).join(', ');
+            const addressLine2 = addr.neighbourhood || addr.suburb || '';
+
+            setFormData(prev => ({
+              ...prev,
+              city: city,
+              state: state,
+              pincode: pincode.replace(/\s+/g, ''),
+              addressLine1: addressLine1 || data.display_name || '',
+              addressLine2: addressLine2
+            }));
+            
+            toast({ title: "Location Detected!", description: "Address details updated." });
+          } else {
+            throw new Error("Invalid address response from geocoding service");
+          }
+        } catch (err) {
+          console.error("Geolocation reverse geocoding error:", err);
+          toast({
+            variant: "destructive",
+            title: "Location Error",
+            description: "Could not retrieve address details. Please fill in manually."
+          });
+        } finally {
           setIsLocating(false);
-          toast({ title: "Found You!", description: "Address details suggested." });
-        }, 1200);
+        }
       },
-      () => setIsLocating(false)
+      (error) => {
+        setIsLocating(false);
+        let msg = "Could not detect location. Please fill in manually.";
+        if (error.code === 1) {
+          msg = "Location permission denied. Please allow location access in your browser settings.";
+        } else if (error.code === 2) {
+          msg = "Location details unavailable. Please fill in manually.";
+        } else if (error.code === 3) {
+          msg = "Location request timed out. Please fill in manually.";
+        }
+        toast({
+          variant: "destructive",
+          title: "Location Error",
+          description: msg
+        });
+      }
     );
   };
 
@@ -211,7 +279,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-slate-50 relative overflow-x-hidden">
       <Navbar />
       <div className="container mx-auto px-4 pt-28 pb-12 lg:pt-36 lg:pb-16 max-w-6xl">
         

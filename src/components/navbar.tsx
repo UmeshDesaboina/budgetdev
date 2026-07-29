@@ -226,7 +226,7 @@ export function Navbar() {
       {/* Main Navbar Container with Custom Torn-Paper Background */}
       <div
   className={cn(
-    "relative w-screen overflow-visible transition-all duration-300",
+    "relative w-full overflow-visible transition-all duration-300",
     isDesktop ? "h-32 bg-transparent" : "h-24 bg-transparent"
   )}
 >
