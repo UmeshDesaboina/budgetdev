@@ -1,0 +1,63 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // STRICT: Only the specific owner email can perform admin actions
+    function isSuperOwner() {
+      return isSignedIn() && request.auth.token.email == 'rohanswakkargiftartstudio@gmail.com';
+    }
+
+    // Products: Everyone can read, only super owner can manage
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+    
+    // Users: Owner or super owner access
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperOwner());
+      allow write: if isSignedIn() && (request.auth.uid == userId || isSuperOwner());
+    }
+
+    // Orders: Owner create/read, super owner full control
+    match /orders/{orderId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperOwner());
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperOwner();
+    }
+
+    // Customized AI Orders: Owner create/read, super owner full control
+    match /customized_orders/{orderId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperOwner());
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperOwner();
+    }
+
+    // Homepage Configs
+    match /homepageDesktop/{docId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+
+    match /mobile_homepage_sections/{docId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+
+    // Settings
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+
+    // Catch-all for other admin tasks
+    match /{path=**} {
+      allow read, write: if isSuperOwner();
+    }
+  }
+}
