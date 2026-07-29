@@ -3,7 +3,7 @@
 
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { LayoutGrid, List, SlidersHorizontal, Search, Package, Eye, Heart, Loader2 } from 'lucide-react';
+import { LayoutGrid, List, SlidersHorizontal, Search, Package, Eye, Heart, Loader2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductCard } from '@/components/product-card';

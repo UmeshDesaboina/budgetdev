@@ -24,10 +24,10 @@ service cloud.firestore {
       allow write: if isSignedIn() && (request.auth.uid == userId || isSuperOwner());
     }
 
-    // Orders: Owner create/read, super owner full control
+    // Orders: Owner create/read, super owner full control, guest allow create
     match /orders/{orderId} {
       allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperOwner());
-      allow create: if isSignedIn();
+      allow create: if true;
       allow update, delete: if isSuperOwner();
     }
 
@@ -47,6 +47,25 @@ service cloud.firestore {
     match /mobile_homepage_sections/{docId} {
       allow read: if true;
       allow write: if isSuperOwner();
+    }
+
+    // Homepage sections (newsletter, desktop sections)
+    match /homepage_sections/{docId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+
+    // Coupons: Everyone can read active status, only super owner can write
+    match /coupons/{couponId} {
+      allow read: if true;
+      allow write: if isSuperOwner();
+    }
+
+    // Wishlist: Only owner or super owner can access
+    match /wishlist/{docId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperOwner());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperOwner());
     }
 
     // Settings

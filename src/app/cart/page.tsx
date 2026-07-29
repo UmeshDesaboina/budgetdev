@@ -110,7 +110,6 @@ export default function CartPage() {
                   <Button asChild className="w-full h-18 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase tracking-widest text-sm shadow-2xl shadow-indigo-100 group">
                     <Link href="/checkout" className="flex items-center justify-center gap-2">Secure Checkout <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" /></Link>
                   </Button>
-                  <div className="flex items-center justify-center gap-6 pt-4 opacity-40 grayscale"><Image src="https://picsum.photos/seed/pay/150/40" alt="Payments" width={150} height={40} className="object-contain" /></div>
                 </div>
 
                 <div className="pt-6 border-t border-slate-50 space-y-4">
