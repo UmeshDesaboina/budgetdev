@@ -23,7 +23,7 @@ interface FestiveSectionProps {
   };
 }
 
-const DEFAULT_BANNER = "https://res.cloudinary.com/drjrbb4yn/image/upload/v1782195228/festive-section-image-_kg1swy.png";
+const DEFAULT_BANNER = "https://res.cloudinary.com/dwgnnr10/image/upload/v1785341862/festive-section-image-_zy2mxi.png";
 
 export function FestiveSection({ cms }: FestiveSectionProps) {
   const db = useFirestore();

@@ -13,7 +13,7 @@ interface MobileFestiveCarouselProps {
   cms?: any;
 }
 
-const DEFAULT_BANNER = "https://res.cloudinary.com/drjrbb4yn/image/upload/v1782195228/festive-section-image-_kg1swy.png";
+const DEFAULT_BANNER = "https://res.cloudinary.com/dwgnnr10/image/upload/v1785341862/festive-section-image-_zy2mxi.png";
 
 export function MobileFestiveCarousel({ cms }: MobileFestiveCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -66,13 +66,15 @@ export function MobileFestiveCarousel({ cms }: MobileFestiveCarouselProps) {
         
         {/* Top Festive Banner */}
         <div className="relative w-full aspect-[1.6/1] rounded-[20px] overflow-hidden shadow-lg">
-          <Image 
-            src={bannerUrl} 
-            alt="Festive Collection" 
-            fill
-            className="object-cover object-top"
-            unoptimized
-          />
+          <div className="absolute inset-x-0 top-0 h-[145%]">
+            <Image 
+              src={bannerUrl} 
+              alt="Festive Collection" 
+              fill
+              className="object-cover object-top"
+              unoptimized
+            />
+          </div>
         </div>
 
         {/* Heading Area */}
