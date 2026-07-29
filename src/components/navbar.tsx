@@ -261,7 +261,7 @@ export function Navbar() {
                   <Menu className="h-7 w-7" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[85vw] sm:w-[380px] p-0 border-none bg-white overflow-y-auto scrollbar-hide">
+              <SheetContent side="left" className="w-[85vw] sm:w-[380px] p-0 border-none bg-white overflow-y-auto scrollbar-hide [&>button]:hidden">
                 <SheetHeader className="sr-only">
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </SheetHeader>
