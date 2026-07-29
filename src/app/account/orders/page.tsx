@@ -14,6 +14,10 @@ const STATUS_MAP: any = {
   'Shipped': 'bg-blue-50 text-blue-600 border-blue-100',
   'Pending': 'bg-amber-50 text-amber-600 border-amber-100',
   'RTO': 'bg-rose-50 text-rose-600 border-rose-100',
+  'Order Placed': 'bg-amber-50 text-amber-600 border-amber-100',
+  'Processing': 'bg-sky-50 text-sky-600 border-sky-100',
+  'Packed': 'bg-indigo-50 text-indigo-600 border-indigo-100',
+  'Out for Delivery': 'bg-purple-50 text-purple-600 border-purple-100',
 };
 
 export default function MyOrdersPage() {
@@ -75,9 +79,9 @@ export default function MyOrdersPage() {
                      <div className="flex items-center gap-6">
                         <div className={cn(
                           "px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest border",
-                          STATUS_MAP[order.status] || STATUS_MAP['Pending']
+                          STATUS_MAP[order.trackingStatus] || STATUS_MAP[order.status] || STATUS_MAP['Pending']
                         )}>
-                           {order.status || 'Pending'}
+                           {order.trackingStatus || order.status || 'Pending'}
                         </div>
                         <Button asChild size="icon" variant="ghost" className="rounded-xl text-slate-300 hover:text-sky-600 hover:bg-sky-50 transition-all">
                            <Link href={`/account/tracking?id=${order.id}`}><ChevronRight className="h-6 w-6" /></Link>

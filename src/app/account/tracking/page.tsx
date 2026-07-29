@@ -98,8 +98,18 @@ export default function OrderTrackingPage() {
         <CardContent className="p-8 md:p-16">
           <div className="relative">
             {/* Visual Timeline Bar */}
-            <div className="absolute left-[27px] top-0 bottom-0 w-[2px] bg-slate-100 md:hidden" />
-            <div className="hidden md:block absolute left-0 right-0 top-7 h-[2px] bg-slate-100" />
+            <div className="absolute left-[27px] top-6 bottom-6 w-[3px] bg-slate-100 md:hidden rounded-full overflow-hidden">
+              <div 
+                className="w-full bg-indigo-600 transition-all duration-500 ease-out"
+                style={{ height: `${(activeStep / (TRACKING_STEPS.length - 1)) * 100}%` }}
+              />
+            </div>
+            <div className="hidden md:block absolute left-[8%] right-[8%] top-7 h-[3px] bg-slate-100 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-indigo-600 transition-all duration-500 ease-out"
+                style={{ width: `${(activeStep / (TRACKING_STEPS.length - 1)) * 100}%` }}
+              />
+            </div>
 
             <div className="flex flex-col md:flex-row justify-between gap-12 relative z-10">
               {TRACKING_STEPS.map((step, idx) => {
