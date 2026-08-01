@@ -13,7 +13,7 @@ interface MobileBestSellersProps {
   cms?: any;
 }
 
-const DEFAULT_BANNER = "https://rohanwakkar.sirv.com/best%20sllers%20.png";
+const DEFAULT_BANNER = "https://res.cloudinary.com/drjrbb4yn/image/upload/v1782027359/kids-image_pn17nh.png";
 
 export function MobileBestSellers({ cms }: MobileBestSellersProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -86,15 +86,11 @@ export function MobileBestSellers({ cms }: MobileBestSellersProps) {
         ) : products && products.length > 0 ? (
           <div className="relative pb-[120px]">
             {/* Banner Area */}
-            <div className="relative w-full aspect-[2.2/1] rounded-[24px] overflow-hidden shadow-inner bg-white">
-              <Image 
-                src={cms?.bannerUrl || DEFAULT_BANNER} 
-                alt="Best Sellers Banner" 
-                fill 
-                className="object-cover"
-                unoptimized
-              />
+            <div className="relative w-full aspect-[1.6/1] rounded-[24px] overflow-hidden shadow-inner bg-gradient-to-br from-[#FF6B95] via-[#FF8DB1] to-[#FFD580] flex items-center justify-center">
               <div className="absolute inset-0 bg-black/5" />
+              <h3 className="relative z-10 font-headline font-black text-2xl text-white tracking-tight drop-shadow-sm uppercase">
+                Best Sellers
+              </h3>
             </div>
 
             {/* Overlapping Products Carousel */}

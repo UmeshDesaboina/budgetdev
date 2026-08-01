@@ -27,114 +27,121 @@ export function CategoryGrid({ cms }: { cms?: any }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     align: 'start',
     containScroll: 'trimSnaps',
-    dragFree: true
+    dragFree: false
   });
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
+  const scrollTo = useCallback((index: number) => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
+  const onInit = useCallback((emblaApi: any) => {
+    setScrollSnaps(emblaApi.scrollSnapList());
+  }, []);
+
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
     setCanScrollPrev(emblaApi.canScrollPrev());
     setCanScrollNext(emblaApi.canScrollNext());
   }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
+    onInit(emblaApi);
     onSelect();
-    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onInit);
     emblaApi.on('reInit', onSelect);
-  }, [emblaApi, onSelect]);
+    emblaApi.on('select', onSelect);
+  }, [emblaApi, onInit, onSelect]);
+
+  const renderTitle = (titleText: string) => {
+    const text = titleText || "Shop by Category";
+    if (text.toLowerCase().includes("category")) {
+      return (
+        <>
+          Shop by <span className="text-sky-500">Category</span>
+        </>
+      );
+    }
+    return text;
+  };
 
   return (
     <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="flex items-end justify-between mb-10 md:mb-16">
-          <div className="space-y-2 md:space-y-4">
-            <h2 className="font-headline font-black text-3xl md:text-6xl text-slate-800 tracking-tight">
-              {data.title || DEFAULT_MOCK.title}
-            </h2>
-            <div className="w-16 md:w-24 h-1 md:h-1.5 bg-sky-200 rounded-full" />
-          </div>
-
-          {/* Navigation Arrows */}
-          {cards.length > 4 && (
-            <div className="hidden md:flex gap-3 md:gap-4 pb-2">
-              <Button
-                onClick={scrollPrev}
-                disabled={!canScrollPrev}
-                variant="outline"
-                size="icon"
-                className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border-2 border-slate-100 hover:border-sky-500 hover:text-sky-500 transition-all bg-white shadow-sm disabled:opacity-30"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-              <Button
-                onClick={scrollNext}
-                disabled={!canScrollNext}
-                variant="outline"
-                size="icon"
-                className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border-2 border-slate-100 hover:border-sky-500 hover:text-sky-500 transition-all bg-white shadow-sm disabled:opacity-30"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
-            </div>
-          )}
+        {/* Centered Heading */}
+        <div className="flex flex-col items-center text-center justify-center w-full mb-10 md:mb-16">
+          <h2 className="font-headline font-black text-3xl md:text-5xl lg:text-6xl text-slate-800 tracking-tight text-center mx-auto">
+            Shop By <span className="text-sky-500">Category</span>
+          </h2>
         </div>
 
-        {/* Mobile Grid View (2 in one line, remaining in second line) */}
-        <div className="md:hidden grid grid-cols-2 gap-4">
-          {cards.map((cat: any, i: number) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05, duration: 0.5 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <Link 
-                href={cat.url || '#'}
-                className={cn(
-                  "block rounded-[2rem] aspect-[3/4.2] relative transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] border-4 border-white shadow-lg"
-                )}
-                style={{ backgroundColor: cat.backgroundColor || DEFAULT_MOCK.cards[i % 4]?.backgroundColor || '#F1F5F9' }}
-              >
-                <div className="relative z-10 p-4 flex flex-col items-center h-full text-center">
-                  <h3 className={cn(
-                    "font-headline font-black text-[10px] tracking-[0.2em] uppercase transition-all duration-500",
-                    "text-white drop-shadow-md mt-2"
-                  )}>
-                    {cat.title}
-                  </h3>
+        {/* Mobile View: 2x2 Grid */}
+        <div className="md:hidden grid grid-cols-2 gap-4 pb-8">
+          {cards.slice(0, 4).map((cat: any, i: number) => {
+            const colors = [
+              { border: 'border-[#FF5B84]', text: 'text-[#FF5B84]' }, // bags
+              { border: 'border-[#039BE5]', text: 'text-[#039BE5]' }, // bottles
+              { border: 'border-[#FF5B84]', text: 'text-[#FF5B84]' }, // umbrellas
+              { border: 'border-[#00897B]', text: 'text-[#00897B]' }  // combos
+            ];
+            const colorPair = colors[i % colors.length];
 
-                  <div className="flex-1 w-full flex items-center justify-center relative">
-                    {cat.imageUrl && (
-                      <div className="relative w-[110%] h-[110%] scale-110 transition-transform duration-700 group-hover:scale-125 origin-center">
-                        <Image 
-                          src={cat.imageUrl} 
-                          alt={cat.title} 
-                          fill 
-                          className="object-contain drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)]"
-                          unoptimized
-                        />
-                      </div>
-                    )}
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
+                viewport={{ once: true }}
+                className="relative overflow-visible"
+              >
+                <Link 
+                  href={cat.url || '#'}
+                  className="block rounded-[2.5rem] aspect-[3/3.6] relative border-4 border-white shadow-lg overflow-visible"
+                  style={{ backgroundColor: cat.backgroundColor || DEFAULT_MOCK.cards[i % 4]?.backgroundColor || '#F1F5F9' }}
+                >
+                  {/* Badge with Category Name */}
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-auto">
+                    <div className={cn(
+                      "bg-white border-[1.5px] px-3.5 py-1 rounded-md text-center shadow-sm",
+                      colorPair.border
+                    )}>
+                      <span className={cn(
+                        "font-black text-[10px] tracking-widest uppercase block whitespace-nowrap",
+                        colorPair.text
+                      )}>
+                        {cat.title}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="w-6 h-1 rounded-full bg-white/40 group-hover:w-12 group-hover:bg-white transition-all duration-500 mb-1" />
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                  {/* Image */}
+                  {cat.imageUrl && (
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[110%] h-[90%] pointer-events-none">
+                      <Image 
+                        src={cat.imageUrl} 
+                        alt={cat.title} 
+                        fill 
+                        className="object-contain object-bottom drop-shadow-[0_15px_15px_rgba(0,0,0,0.18)]"
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Desktop Carousel View */}
-        <div className="hidden md:block relative" ref={emblaRef}>
-          <div className="flex -ml-4 md:-ml-8">
+        {/* Desktop View: Carousel */}
+        <div className="hidden md:block relative overflow-hidden" ref={emblaRef}>
+          <div className="flex -ml-4 md:-ml-8 pb-12 md:pb-16">
             {cards.map((cat: any, i: number) => (
               <motion.div
                 key={i}
@@ -142,44 +149,56 @@ export function CategoryGrid({ cms }: { cms?: any }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05, duration: 0.5 }}
                 viewport={{ once: true }}
-                className="flex-[0_0_240px] md:flex-[0_0_25%] min-w-0 pl-4 md:pl-8 group"
+                className="flex-[0_0_75%] sm:flex-[0_0_45%] md:flex-[0_0_31%] min-w-0 pl-4 md:pl-8 group relative"
               >
                 <Link 
                   href={cat.url || '#'}
                   className={cn(
-                    "block rounded-[2.5rem] md:rounded-[3.5rem] aspect-[3/5] relative transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] border-4 border-white shadow-lg"
+                    "block rounded-[2.5rem] md:rounded-[3.5rem] aspect-[3/3.4] relative transition-all duration-700 hover:shadow-[0_45px_90px_-20px_rgba(0,0,0,0.25)] border-4 border-white shadow-lg overflow-visible"
                   )}
                   style={{ backgroundColor: cat.backgroundColor || DEFAULT_MOCK.cards[i % 4]?.backgroundColor || '#F1F5F9' }}
                 >
-                  <div className="relative z-10 p-6 md:p-10 flex flex-col items-center h-full text-center">
-                    <h3 className={cn(
-                      "font-headline font-black text-[11px] md:text-sm tracking-[0.25em] uppercase transition-all duration-500",
-                      "text-white drop-shadow-md mt-2 md:mt-4"
-                    )}>
+                  <div className="p-6 md:p-8 flex flex-col items-center">
+                    {/* Centered Larger and Bolder Title */}
+                    <h3 className="font-headline font-black text-xl md:text-2xl lg:text-3xl tracking-widest text-white drop-shadow-md mt-2 md:mt-4 uppercase">
                       {cat.title}
                     </h3>
-
-                    <div className="flex-1 w-full flex items-center justify-center relative">
-                      {cat.imageUrl && (
-                        <div className="relative w-full h-[85%] md:h-[90%] scale-125 md:scale-[1.35] transition-transform duration-700 group-hover:scale-[1.4] origin-center">
-                          <Image 
-                            src={cat.imageUrl} 
-                            alt={cat.title} 
-                            fill 
-                            className="object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.25)]"
-                            unoptimized
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="w-8 md:w-10 h-1 md:h-1.5 rounded-full bg-white/40 group-hover:w-16 md:group-hover:w-20 group-hover:bg-white transition-all duration-500 mb-2 md:mb-6" />
                   </div>
+
+                  {/* Image positioned absolutely to overflow at the bottom (Direct child of relative Link) */}
+                  {cat.imageUrl && (
+                    <div className="absolute -bottom-10 md:-bottom-16 left-1/2 -translate-x-1/2 w-[110%] md:w-[120%] h-[95%] md:h-[105%] transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 origin-bottom pointer-events-none">
+                      <Image 
+                        src={cat.imageUrl} 
+                        alt={cat.title} 
+                        fill 
+                        className="object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.25)]"
+                        unoptimized
+                      />
+                    </div>
+                  )}
                 </Link>
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Scroll Indicator Dots (Desktop Only) */}
+        {scrollSnaps.length > 1 && (
+          <div className="hidden md:flex justify-center gap-2.5 mt-2">
+            {scrollSnaps.map((_, index: number) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={cn(
+                  "h-2.5 rounded-full transition-all duration-300",
+                  selectedIndex === index ? "bg-[#FF69B4] w-6" : "bg-slate-200 hover:bg-slate-300 w-2.5"
+                )}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

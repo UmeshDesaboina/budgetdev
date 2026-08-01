@@ -14,8 +14,8 @@ interface HeroProps {
 const DEFAULT_MOCK = {
   imageUrl: "https://rohanwakkar.sirv.com/main-home-banner-website-design-home-page.png",
   subHeading: "UNIQUE, PERSONALIZED GIFTS",
-  heading: "Personalized Gifts Made Special",
-  description: "Creating memorable gifting experiences for kids, families, and loved ones through artisanal craftsmanship.",
+  heading: "Unique Gifts, Made for Kids",
+  description: "Create unforgettable childhood memories with our premium handcrafted collection of personalized bags, toys, and essentials.",
   primaryButtonText: "Explore Shop",
   primaryButtonUrl: "/shop/new/best-sellers",
   secondaryButtonText: "All Categories",
@@ -41,11 +41,11 @@ export const Hero = memo(({ cms, isMobile }: HeroProps) => {
 
   return (
     <section 
-      className="relative overflow-hidden flex items-center pt-[110px] pb-12 md:pt-[140px] md:pb-16 lg:pt-[160px] lg:pb-20 w-full aspect-[3/5] md:aspect-auto md:min-h-[700px] lg:min-h-[750px] bg-sky-50 transition-all duration-700"
+      className="relative overflow-hidden flex items-center pt-[110px] pb-12 md:pt-[140px] md:pb-16 lg:pt-[160px] lg:pb-20 w-full aspect-[3/5] md:aspect-auto lg:aspect-[4924/2684] md:min-h-[700px] lg:min-h-0 bg-sky-50 transition-all duration-700"
     >
-      {/* Background Image Layer starting exactly below the navbar's torn paper edge */}
+      {/* Background Image Layer starting from the very top of the hero section */}
       <div 
-        className="absolute inset-x-0 bottom-0 top-[50px] md:top-[60px] lg:top-[75px] z-10 bg-no-repeat bg-cover bg-[position:center_top]"
+        className="absolute inset-0 z-10 bg-no-repeat bg-cover bg-[position:center_top]"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05)), url('${bannerImage}')`,
         }}

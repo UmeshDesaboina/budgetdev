@@ -9,6 +9,7 @@ import { Sparkles, Star, TrendingUp, Gem, Tag, Leaf, Loader2 } from 'lucide-reac
 import Link from 'next/link';
 import { useCollection, useFirestore } from '@/firebase';
 import { collection, query, where, limit } from 'firebase/firestore';
+import { CategoryGrid } from '@/components/home/category-grid';
 
 const COLLECTIONS = [
   { name: 'Best Sellers', icon: Star, color: 'text-amber-500', bg: 'bg-amber-50' },
@@ -51,16 +52,9 @@ export default function CollectionsPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
-          {COLLECTIONS.map((col) => (
-            <div key={col.name} className="group cursor-pointer">
-              <div className={`${col.bg} rounded-[2rem] p-6 aspect-square flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl border-4 border-white`}>
-                <col.icon className={`h-8 w-8 ${col.color} mb-3`} />
-                <h3 className="font-black text-[10px] uppercase tracking-widest text-slate-800">{col.name}</h3>
-              </div>
-            </div>
-          ))}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="mb-12">
+          <CategoryGrid />
         </div>
 
         <div className="space-y-20">

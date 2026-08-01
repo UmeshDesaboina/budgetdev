@@ -12,7 +12,7 @@ export function WhatsAppButton() {
   const message = "Hi GiftArtStudio! I'd like to know more about your personalized gifts.";
 
   return (
-    <div className="fixed bottom-24 lg:bottom-10 right-6 z-[110]">
+    <div className="fixed bottom-36 lg:bottom-10 right-6 z-[110]">
       <a 
         href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
         target="_blank"

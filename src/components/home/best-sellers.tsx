@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Star, Palette, Heart, Gift, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFirestore, useCollection } from '@/firebase';
@@ -35,12 +35,50 @@ export function BestSellers({ cms }: { cms?: any }) {
   const { data: products, loading } = useCollection<any>(bestSellersQuery);
 
   return (
-    <section className="hidden md:block relative bg-white overflow-hidden">
+    <section className="hidden md:block relative bg-white overflow-hidden py-12">
+      {/* 3 Pointers at the top on a white background with generous whitespace */}
+      <div className="max-w-[1440px] mx-auto px-6 mb-16">
+        <div className="flex justify-center items-center gap-12 lg:gap-24">
+          {/* Pointer 1 */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-full bg-[#FFFBEB] flex items-center justify-center text-[#F59E0B] shadow-inner">
+              <Star className="w-5 h-5 fill-[#F59E0B]" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-[14px] font-black text-slate-800">Premium Quality</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider mt-0.5">PERSONALIZED FOR MEMORIES</span>
+            </div>
+          </div>
+          
+          {/* Pointer 2 */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-full bg-[#ECFDF5] flex items-center justify-center text-[#10B981] shadow-inner">
+              <Palette className="w-5 h-5 fill-[#10B981]" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-[14px] font-black text-slate-800">Unique & Handcrafted</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider mt-0.5">250+ UNIQUE THEMES</span>
+            </div>
+          </div>
+          
+          {/* Pointer 3 */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-full bg-[#FFF1F2] flex items-center justify-center text-[#F43F5E] shadow-inner">
+              <Heart className="w-5 h-5 fill-[#F43F5E]" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-[14px] font-black text-slate-800">Loved by Thousands</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider mt-0.5">10,000+ HAPPY CUSTOMERS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* 
         Container designed to maintain image aspect ratio without distortion.
         The padding and margins are adjusted to let the cards sit on the "floor" of the background.
       */}
-      <div className="relative w-full max-w-[1440px] mx-auto overflow-hidden">
+      <div className="relative w-full max-w-[1440px] mx-auto overflow-visible">
         {/* Background Image Layer */}
         <div className="relative w-full aspect-[1440/1000]">
           <Image 
@@ -51,6 +89,30 @@ export function BestSellers({ cms }: { cms?: any }) {
             priority
             unoptimized
           />
+        </div>
+
+        {/* Logo and Header Overlay centered and overlapping top section of the background */}
+        <div className="absolute top-[4%] left-0 right-0 z-20 flex flex-col items-center pointer-events-none">
+          <div className="bg-white rounded-3xl shadow-xl shadow-[#0ea5e9]/5 px-8 py-3.5 flex items-center gap-3 border border-slate-100/50 pointer-events-auto">
+            <div className="relative">
+              <div className="w-9 h-9 bg-[#0ea5e9] rounded-xl flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+                <Gift className="w-5 h-5" />
+              </div>
+              <Sparkles className="absolute -top-1 -right-1 w-3 h-3 text-amber-400 fill-amber-400 animate-pulse" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-headline font-black text-lg text-[#1E1B4B] tracking-tighter">
+                GiftArtStudio
+              </span>
+              <span className="text-[7px] font-black text-[#0ea5e9] uppercase tracking-[0.3em]">
+                MAGICAL GIFTS
+              </span>
+            </div>
+          </div>
+
+          <h2 className="mt-4 font-headline font-black text-white text-3xl md:text-4xl lg:text-5xl drop-shadow-sm tracking-tight">
+            Best Sellers
+          </h2>
         </div>
 
         {/* Product Cards Overlay - Positioned exactly as per reference */}
@@ -77,22 +139,20 @@ export function BestSellers({ cms }: { cms?: any }) {
                       )}
                     >
                       <Link href={`/product/${p.id}`} className="flex flex-col h-full">
-                        {/* Product Image Area - High Padding for Rounded Look */}
-                        <div className="p-6 pb-2">
-                          <div className="relative aspect-square w-full rounded-[2.5rem] overflow-hidden bg-white shadow-sm border border-black/5">
-                            <Image 
-                              src={p.image} 
-                              alt={p.name} 
-                              fill 
-                              className="object-cover transition-transform duration-1000 group-hover:scale-110" 
-                              unoptimized 
-                            />
-                          </div>
+                        {/* Product Image Area - Edge-to-edge top, left, right to match reference */}
+                        <div className="relative aspect-square w-full bg-white rounded-t-[3rem] overflow-hidden">
+                          <Image 
+                            src={p.image} 
+                            alt={p.name} 
+                            fill 
+                            className="object-cover transition-transform duration-1000 group-hover:scale-110" 
+                            unoptimized 
+                          />
                         </div>
                         
                         {/* Product Info Area - Centered and Bold as per Screenshot */}
-                        <div className="p-6 pt-4 pb-12 flex-1 flex flex-col items-center justify-between text-center space-y-6">
-                          <h3 className="font-black text-slate-800 text-[14px] lg:text-[16px] leading-tight uppercase tracking-tight max-w-[200px]">
+                        <div className="p-6 pt-7 pb-10 flex-1 flex flex-col items-center justify-between text-center space-y-6">
+                          <h3 className="font-black text-slate-800 text-[14px] lg:text-[17px] leading-snug tracking-tight max-w-[220px]">
                             {p.name}
                           </h3>
                           

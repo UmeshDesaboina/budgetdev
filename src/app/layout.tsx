@@ -9,6 +9,7 @@ import { WhatsAppButton } from '@/components/whatsapp-button';
 import { FirebaseClientProvider } from '@/firebase';
 import { DynamicSEO } from '@/components/dynamic-seo';
 import { EngagementSystem } from '@/components/engagement-system';
+import { LivePurchaseNotifications } from '@/components/live-purchase-notifications';
 
 export const metadata: Metadata = {
   title: 'GiftArtStudio | Magical Personalized Gifts',
@@ -36,6 +37,7 @@ export default function RootLayout({
           <CartProvider>
             {children}
             <EngagementSystem />
+            <LivePurchaseNotifications />
             <NewsletterPopup />
             <WhatsAppButton />
             <Toaster />

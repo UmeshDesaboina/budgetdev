@@ -129,6 +129,12 @@ const NAV_STRUCTURE = [
     ]
   },
   {
+    label: 'ABOUT US',
+    icon: Info,
+    type: 'link',
+    href: '/about'
+  },
+  {
     label: 'CUSTOMIZE',
     icon: Wand2,
     type: 'link',
@@ -216,18 +222,20 @@ export function Navbar() {
   }, []);
 
   const navItemClass = (href: string) => cn(
-    "text-[10px] font-black tracking-[0.1em] uppercase transition-all flex items-center gap-1.5 whitespace-nowrap py-2",
+    "text-[11px] font-extrabold tracking-[0.1em] uppercase transition-all flex items-center gap-1.5 whitespace-nowrap py-2",
     pathname === href ? "text-[#1E1B4B]" : "text-[#2E1065] hover:text-[#4C1D95]"
   );
 
   return (
 <header className="fixed inset-x-0 top-0 z-[9999] overflow-visible">
-      <AnnouncementBar />
+      <div className="lg:hidden">
+        <AnnouncementBar />
+      </div>
       {/* Main Navbar Container with Custom Torn-Paper Background */}
       <div
   className={cn(
     "relative w-full overflow-visible transition-all duration-300",
-    isDesktop ? "h-32 bg-transparent" : "h-24 bg-transparent"
+    isDesktop ? "h-28 bg-transparent" : "h-24 bg-transparent"
   )}
 >
         {/* Background Layer (Responsive Implementation) */}
@@ -238,21 +246,22 @@ export function Navbar() {
     <div
       className={cn(
         "absolute left-1/2 -translate-x-1/2",
-        isDesktop ? "-top-20" : "-top-10"
+        isDesktop ? "-top-[120px]" : "-top-10"
       )}
       style={{
         width: "100vw",
-        height: isDesktop ? "205px" : "130px",
+        height: isDesktop ? "auto" : "175px",
+        aspectRatio: isDesktop ? "7476/1212" : "auto",
         backgroundImage:
           "url('https://rohanwakkar.sirv.com/website-Top-bar-.png')",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "top center",
-        backgroundSize: isDesktop ? "115vw 100%" : "200vw 100%",
+        backgroundSize: isDesktop ? "100% 100%" : "200vw 100%",
       }}
     />
   </div>
 )}
-<div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6 relative z-10 gap-4">
+<div className="container mx-auto flex items-center justify-between h-20 lg:h-20 px-4 md:px-6 relative z-10 gap-4">
           
           <div className="lg:hidden shrink-0">
             <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
@@ -307,7 +316,7 @@ export function Navbar() {
                       </div>
                     ) : (
                       <div className="px-6">
-                        <Button asChild className="w-full h-14 rounded-2xl bg-[#0ea5e9] hover:bg-sky-600 font-black uppercase text-xs tracking-widest shadow-lg shadow-sky-500/20">
+                        <Button asChild className="w-full h-14 rounded-2xl bg-[#B57CFF] hover:bg-[#a163fa] font-black uppercase text-xs tracking-widest shadow-lg shadow-purple-500/20">
                           <Link href="/login">Sign In / Join Studio</Link>
                         </Button>
                       </div>
@@ -347,13 +356,13 @@ export function Navbar() {
             {NAV_STRUCTURE.map((group) => (
               group.type === 'dropdown' ? (
                 <DropdownMenu key={group.label}>
-                  <DropdownMenuTrigger className="flex items-center gap-1 text-[10px] font-black tracking-[0.1em] uppercase text-[#2E1065] hover:text-[#4C1D95] outline-none transition-colors py-2">
+                  <DropdownMenuTrigger className="flex items-center gap-1 text-[11px] font-extrabold tracking-[0.1em] uppercase text-[#2E1065] hover:text-[#4C1D95] outline-none transition-colors py-2">
                     {group.label} <ChevronDown className="h-3 w-3 opacity-40 group-hover:opacity-100 transition-opacity" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" sideOffset={15} className="z-[10000] min-w-[220px] p-3 rounded-2xl border-slate-100 shadow-2xl bg-white">
                     {group.items?.map((item) => (
                       <DropdownMenuItem key={item.label} asChild className="focus:bg-sky-50 focus:text-sky-600 rounded-xl p-0 overflow-hidden">
-                        <Link href={item.href} className="w-full text-[10px] font-black tracking-widest uppercase text-slate-500 p-4 transition-all">
+                        <Link href={item.href} className="w-full text-[11px] font-bold tracking-widest uppercase text-slate-500 p-4 transition-all">
                           {item.label}
                         </Link>
                       </DropdownMenuItem>

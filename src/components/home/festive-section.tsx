@@ -60,7 +60,7 @@ export function FestiveSection({ cms }: FestiveSectionProps) {
       </div>
 
       <div 
-        className="relative w-full h-[450px] transition-all duration-700 brightness-95"
+        className="relative w-full h-[600px] transition-all duration-700 brightness-95"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('${bannerUrl}')`,
           backgroundSize: 'cover',
@@ -70,7 +70,7 @@ export function FestiveSection({ cms }: FestiveSectionProps) {
       />
 
       <div className="container mx-auto px-4 max-w-7xl relative">
-        <div className="relative -mt-48 z-20 flex flex-col md:flex-row items-stretch justify-center gap-8 lg:gap-12 max-w-6xl mx-auto">
+        <div className="relative -mt-16 z-20 flex flex-col md:flex-row items-stretch justify-center gap-8 lg:gap-12 max-w-6xl mx-auto">
           {loading ? (
             <div className="w-full py-20 flex justify-center bg-white/80 backdrop-blur-md rounded-[3rem] shadow-xl">
               <Loader2 className="h-10 w-10 animate-spin text-amber-500" />
@@ -84,25 +84,23 @@ export function FestiveSection({ cms }: FestiveSectionProps) {
                 whileHover={{ y: -15 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6, type: 'spring' }}
-                className={cn(
-                  "w-full md:flex-1 bg-[#F59E0B] rounded-[3.5rem] shadow-2xl overflow-hidden border-[8px] border-white flex flex-col group cursor-pointer",
-                  i === 2 && "bg-[#EA580C]"
-                )}
+                className="w-full md:flex-1 bg-[#EA580C] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col group cursor-pointer"
               >
                 <Link href={`/product/${p.id}`} className="flex flex-col h-full">
-                  <div className="relative aspect-square w-full p-2">
-                     <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-white shadow-inner">
-                        <Image 
-                          src={p.image} 
-                          alt={p.name} 
-                          fill 
-                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                          unoptimized
-                        />
-                     </div>
+                  {/* Product Image Area - Edge-to-edge top, left, right to match reference */}
+                  <div className="relative aspect-square w-full bg-white rounded-t-[3rem] overflow-hidden">
+                    <Image 
+                      src={p.image} 
+                      alt={p.name} 
+                      fill 
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                      unoptimized
+                    />
                   </div>
-                  <div className="p-8 pb-10 flex-1 flex flex-col items-center text-center space-y-6">
-                     <h3 className="font-black text-white text-base lg:text-lg leading-snug uppercase tracking-tight line-clamp-2 min-h-[2.5rem]">
+                  
+                  {/* Product Info Area - Dark Orange background bottom patch */}
+                  <div className="p-8 pt-7 pb-10 flex-1 flex flex-col items-center text-center space-y-6">
+                     <h3 className="font-black text-white text-base lg:text-[17px] leading-snug tracking-tight line-clamp-2 min-h-[3rem]">
                        {p.name}
                      </h3>
                      <div className="flex items-center justify-center w-32 h-7 md:h-9 bg-[#FF69B4] rounded-full shadow-lg shadow-black/5 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 text-white font-black text-[10px] md:text-[12px] uppercase tracking-widest">

@@ -27,6 +27,7 @@ interface ShopContentProps {
 export function ShopContent({ category, subcategory, onOpenFilters }: ShopContentProps) {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [sort, setSort] = useState('featured');
+  const [itemsPerPage, setItemsPerPage] = useState('20');
   const [searchQuery, setSearchBar] = useState('');
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   
@@ -87,10 +88,20 @@ export function ShopContent({ category, subcategory, onOpenFilters }: ShopConten
     // 4. Sorting
     if (sort === 'low-high') result.sort((a, b) => a.price - b.price);
     if (sort === 'high-low') result.sort((a, b) => b.price - a.price);
-    if (sort === 'newest') result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
+    if (sort === 'newest' || sort === 'date-new') result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
+    if (sort === 'date-old') result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? 1 : -1));
+    if (sort === 'alpha-asc') result.sort((a, b) => a.name.localeCompare(b.name));
+    if (sort === 'alpha-desc') result.sort((a, b) => b.name.localeCompare(a.name));
+    if (sort === 'best-selling') result.sort((a, b) => (a.isBestSeller === b.isBestSeller ? 0 : a.isBestSeller ? -1 : 1));
     
     return result;
   }, [allProducts, category, subcategory, searchQuery, sort, searchParams]);
+
+  // Slices items per page dynamically
+  const displayedProducts = useMemo(() => {
+    const limitNum = itemsPerPage === 'all' ? filteredProducts.length : Number(itemsPerPage);
+    return filteredProducts.slice(0, limitNum);
+  }, [filteredProducts, itemsPerPage]);
 
   if (loading) {
     return (
@@ -116,7 +127,7 @@ export function ShopContent({ category, subcategory, onOpenFilters }: ShopConten
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+        <div className="flex flex-wrap items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
           <Button 
             variant="outline" 
             size="sm" 
@@ -125,18 +136,46 @@ export function ShopContent({ category, subcategory, onOpenFilters }: ShopConten
           >
             <SlidersHorizontal className="h-3.5 w-3.5" /> Filter
           </Button>
+
+          {/* Items Per Page Selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider whitespace-nowrap">
+              ITEMS PER PAGE
+            </span>
+            <Select value={itemsPerPage} onValueChange={setItemsPerPage}>
+              <SelectTrigger className="w-[80px] h-12 rounded-2xl border-slate-100 bg-white font-bold text-xs shadow-sm">
+                <SelectValue placeholder="20" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-slate-100">
+                <SelectItem value="12">12</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="36">36</SelectItem>
+                <SelectItem value="all">All</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           
-          <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger className="w-[180px] h-12 rounded-2xl border-slate-100 bg-white font-black text-[10px] uppercase tracking-widest shadow-sm">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent className="rounded-2xl border-slate-100">
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="newest">Newest First</SelectItem>
-              <SelectItem value="low-high">Price: Low to High</SelectItem>
-              <SelectItem value="high-low">Price: High to Low</SelectItem>
-            </SelectContent>
-          </Select>
+          {/* Sort By Selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider whitespace-nowrap">
+              SORT BY
+            </span>
+            <Select value={sort} onValueChange={setSort}>
+              <SelectTrigger className="w-[180px] h-12 rounded-2xl border-slate-100 bg-white font-bold text-xs shadow-sm">
+                <SelectValue placeholder="Best selling" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-slate-100">
+                <SelectItem value="featured">Featured</SelectItem>
+                <SelectItem value="best-selling">Best selling</SelectItem>
+                <SelectItem value="alpha-asc">Alphabetically, A-Z</SelectItem>
+                <SelectItem value="alpha-desc">Alphabetically, Z-A</SelectItem>
+                <SelectItem value="low-high">Price, low to high</SelectItem>
+                <SelectItem value="high-low">Price, high to low</SelectItem>
+                <SelectItem value="date-new">Date, new to old</SelectItem>
+                <SelectItem value="date-old">Date, old to new</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <div className="flex items-center gap-1 border border-slate-100 rounded-2xl p-1 bg-white shadow-sm">
             <Button 
@@ -168,7 +207,7 @@ export function ShopContent({ category, subcategory, onOpenFilters }: ShopConten
 
       {/* Grid Content */}
       <AnimatePresence mode="wait">
-        {filteredProducts.length > 0 ? (
+        {displayedProducts.length > 0 ? (
           <motion.div 
             key={`${category}-${subcategory}-${view}`}
             initial={{ opacity: 0, y: 20 }}
@@ -179,7 +218,7 @@ export function ShopContent({ category, subcategory, onOpenFilters }: ShopConten
               view === 'grid' ? "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
             )}
           >
-            {filteredProducts.map((product) => (
+            {displayedProducts.map((product) => (
               <div key={product.id} className="group relative">
                 {view === 'grid' ? (
                   <div className="relative">

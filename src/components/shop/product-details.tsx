@@ -332,14 +332,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           <div className="pt-2">
              <div className="bg-white border-2 border-dashed border-sky-100 rounded-2xl p-4 space-y-3">
                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                  <Wand2 className="h-3 w-3 text-[#0ea5e9]" /> CUSTOMIZE WITH NAME
+                  <Wand2 className="h-3 w-3 text-[#0ea5e9]" /> CUSTOMIZE WITH NAME <span className="text-[#FF6B95] font-bold text-[8px] lowercase tracking-normal"> (Name characters should be under 10 alphabet)</span>
                 </p>
                 <Input 
                   placeholder="NAME FOR PERSONALIZATION" 
                   value={personalizationName}
                   onChange={(e) => setPersonalizationName(e.target.value.toUpperCase())}
                   className="h-12 rounded-xl border-none font-black tracking-widest text-xs bg-slate-50/50"
-                  maxLength={15}
+                  maxLength={10}
                 />
              </div>
           </div>
@@ -427,7 +427,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       </Dialog>
 
       {/* Persistent Mobile Sticky CTA Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-xl border-t border-slate-100 p-4 pb-24 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-[#FFF0F7]/95 backdrop-blur-xl border-t border-pink-100/80 p-4 pb-24 shadow-[0_-10px_40px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-3 max-w-md mx-auto">
            <Button 
             onClick={handleToggleWishlist}
@@ -444,9 +444,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
            <Button 
             onClick={handleAddToCart}
             variant="outline"
-            className="flex-1 h-14 rounded-2xl border-2 border-slate-100 font-black text-[10px] uppercase tracking-widest text-slate-600"
+            className="flex-1 h-14 rounded-2xl border-2 border-sky-100 bg-sky-50 font-black text-[9px] uppercase tracking-widest text-sky-600 hover:bg-sky-100/80 transition-colors"
            >
-             <ShoppingCart className="h-4 w-4 mr-2" /> Cart
+             <ShoppingCart className="h-4 w-4 mr-2" /> Add To Cart
            </Button>
            <Button 
             onClick={handleBuyNow}

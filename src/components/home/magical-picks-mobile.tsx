@@ -24,7 +24,7 @@ export function MagicalPicksMobile({ cms }: { cms?: any }) {
         {/* Header Section */}
         <div className="text-center mb-10 space-y-2">
           <h2 className="font-headline font-black text-3xl text-slate-800 tracking-tight">
-            Magical <span className="text-sky-400">Picks</span>
+            Magical <span className="text-sky-400">Reels</span>
           </h2>
           <p className="text-slate-400 font-medium text-xs max-w-[280px] mx-auto leading-relaxed">
             {cms?.subtitle || "See our products in action through the eyes of happy little hearts."}
@@ -77,7 +77,7 @@ export function MagicalPicksMobile({ cms }: { cms?: any }) {
       {/* Video Player Modal */}
       <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
         <DialogContent className="max-w-sm p-0 overflow-hidden bg-black border-none rounded-[3rem] aspect-[9/16] shadow-2xl">
-          <DialogTitle className="sr-only">Magical Picks Player</DialogTitle>
+          <DialogTitle className="sr-only">Magical Reels Player</DialogTitle>
           <div className="relative h-full w-full">
             {selectedVideo && (
               <video 

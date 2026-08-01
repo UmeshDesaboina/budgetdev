@@ -16,7 +16,6 @@ import { NewArrivals } from '@/components/home/new-arrivals';
 import { MobileBestSellers } from '@/components/home/mobile-best-sellers';
 import { BestSellers } from '@/components/home/best-sellers';
 import { TrustBar } from '@/components/home/trust-bar';
-import { ValueStrip } from '@/components/home/value-strip';
 
 // Dynamic heavy components
 const FestiveSection = dynamic(() => import('@/components/home/festive-section').then(mod => mod.FestiveSection), { ssr: false });
@@ -110,8 +109,6 @@ export default function Home() {
 
         {/* Trust Features */}
         <TrustBar cms={desktopCms?.trustFeatures} />
-        
-        <ValueStrip />
       </div>
       
       <Footer />
